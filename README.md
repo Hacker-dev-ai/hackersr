@@ -24,14 +24,3 @@ git clone https://github.com/your-username/Instagram-BruteForce-Demo.git
 cd Instagram-BruteForce-Demo
 python demo.py
 
-# Brute-Force Attack Simulation Tool
-
-**Disclaimer:**  
-This tool is for **educational and cybersecurity awareness purposes** only. Unauthorized, illegal, or malicious use is strictly prohibited.
-
-## Purpose  
-Demonstrates how brute-force attacks exploit weak passwords and highlights the need for strong security measures like 2FA and account lockouts.
-
-## License  
-Licensed under the **MIT License** for educational use only.
-
