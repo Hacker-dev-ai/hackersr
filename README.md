@@ -22,7 +22,8 @@ This simulation demonstrates how attackers may attempt to exploit weak passwords
 ## Setup Instructions
 1. Clone the repository:
    ```bash
-    git clone https://github.com/Hacker-dev-ai/hackersr.git cd hackersr
+    git clone https://github.com/Hacker-dev-ai/hackersr.git
+   cd hackersr
    python bruteforce.py
 
 
