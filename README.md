@@ -19,8 +19,10 @@ This simulation demonstrates how attackers may attempt to exploit weak passwords
 ## Setup Instructions  
 > This project is a simulation only and does not interact with Instagram or any real accounts.
 
+## Setup Instructions
 1. Clone the repository:
-git clone https://github.com/Hacker-dev-ai/hackersr.git
-cd hackersr
-python bruteforce.py
+   ```bash
+    git clone https://github.com/Hacker-dev-ai/hackersr.git cd hackersr
+   python bruteforce.py
+
 
